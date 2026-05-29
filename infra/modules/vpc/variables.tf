@@ -1,0 +1,24 @@
+variable "vpc_cidr" {
+  type = string
+    description = "The CIDR block for the VPC"
+}
+variable "project_name" {
+  type = string
+    description = "The name of the project for tagging resources"
+}
+variable "environment" {
+  type = string
+    description = "The environment name for tagging resources"
+}
+variable "public_subnet_cidrs" {
+  type = list(string)
+    description = "A list of CIDR blocks for the public subnets"
+}
+variable "private_subnet_cidrs" {
+  type = list(string)
+    description = "A list of CIDR blocks for the private subnets"
+}
+variable "availability_zones" {
+  type = list(string)
+    description = "A list of availability zones for the subnets"
+}

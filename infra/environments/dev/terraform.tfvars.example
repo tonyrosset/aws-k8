@@ -1,0 +1,6 @@
+aws_profile                 = ""
+aws_region                  = "us-east-1"
+environment                 = "dev"
+project_name                = "aws-k8s-project"
+owner_name                  = "tony"
+vpc_cidr                    = "10.20.0.0/16"
