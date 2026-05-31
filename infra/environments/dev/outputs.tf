@@ -12,3 +12,15 @@ output "private_subnet_ids" {
   description = "The IDs of the private subnets"
   value       = module.vpc.private_subnet_ids
 }
+
+output "cluster_name" {
+  value = module.eks.cluster_name
+}
+
+output "cluster_endpoint" {
+  value = module.eks.cluster_endpoint
+}
+
+output "node_group_name" {
+  value = module.eks.node_goup_name
+}
