@@ -10,3 +10,6 @@ output "cluster_certificate_authority_data" {
 output "node_goup_name" {
   value = aws_eks_node_group.main.node_group_name
 }
+output "aws_load_balancer_controller_role_arn" {
+  value = aws_iam_role.aws_load_balancer_controller.arn
+}

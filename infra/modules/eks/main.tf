@@ -39,6 +39,73 @@ resource "aws_eks_cluster" "main" {
   }
 }
 
+data "tls_certificate" "cluster" {
+  url = aws_eks_cluster.main.identity[0].oidc[0].issuer
+}
+
+resource "aws_iam_openid_connect_provider" "cluster" {
+  url = aws_eks_cluster.main.identity[0].oidc[0].issuer
+
+  client_id_list = ["sts.amazonaws.com"]
+
+  thumbprint_list = [data.tls_certificate.cluster.certificates[0].sha1_fingerprint]
+}
+
+locals {
+  oidc_provider_url = replace(aws_eks_cluster.main.identity[0].oidc[0].issuer, "https://", "")   
+}
+
+resource "aws_iam_policy" "aws_load_balancer_controller" {
+  name        = "${var.project_name}-${var.environment}-aws-load-balancer-controller"
+  description = "IAM policy for AWS Load Balancer Controller"
+  policy = file("${path.module}/alb-controller-policy.json")
+}
+
+data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Federated"
+      identifiers = [aws_iam_openid_connect_provider.cluster.arn]
+    }
+
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "${local.oidc_provider_url}:sub"
+      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${local.oidc_provider_url}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "aws_load_balancer_controller" {
+  name               = "${var.project_name}-${var.environment}-aws-load-balancer-controller"
+  assume_role_policy = data.aws_iam_policy_document.aws_load_balancer_controller_assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attachment" {
+  policy_arn = aws_iam_policy.aws_load_balancer_controller.arn
+  role       = aws_iam_role.aws_load_balancer_controller.name
+}
+
+resource "kubernetes_service_account" "aws_load_balancer_controller" {
+  metadata {
+    name      = "aws-load-balancer-controller"
+    namespace = "ingress"
+    annotations = {
+      "eks.amazonaws.com/role-arn" = aws_iam_role.aws_load_balancer_controller.arn
+    }
+  }
+}
+
 resource "aws_iam_role" "node" {
   name = "${var.project_name}-${var.environment}-node-role"
 

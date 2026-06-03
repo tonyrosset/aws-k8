@@ -1,0 +1,6 @@
+clusterName: "aws-k8s-project-dev-cluster"
+serviceAccount:
+  create: false
+  name: "aws-load-balancer-controller"
+region: "us-east-1"
+vpcId: "vpc-0d049280a7509c3a1"
