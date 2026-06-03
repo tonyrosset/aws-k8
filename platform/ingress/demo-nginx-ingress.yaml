@@ -10,10 +10,11 @@ spec:
   ingressClassName: alb
   rules:
     - http:
-        paths: /
-        pathType: Prefix
-        backend:
-          service:
-            name: demo-nginx
-            port:
-              number: 80
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: demo-nginx
+              port:
+                number: 80

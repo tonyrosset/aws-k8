@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role" {
     condition {
       test     = "StringEquals"
       variable = "${local.oidc_provider_url}:sub"
-      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+      values   = ["system:serviceaccount:ingress:aws-load-balancer-controller"]
     }
 
     condition {
