@@ -15,4 +15,7 @@ helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-contro
   -n "${NAMESPACE}" \
   --values platform/helm-values/aws-load-balancer-controller/values.yaml
 
+echo "waiting for AWS Load Balancer Controller to be ready..."
+kubectl rollout status deployment/aws-load-balancer-controller -n "${NAMESPACE}"
+
 echo "AWS Load Balancer Controller installed successfully!"  
