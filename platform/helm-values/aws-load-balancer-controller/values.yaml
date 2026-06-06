@@ -3,4 +3,4 @@ serviceAccount:
   create: false
   name: "aws-load-balancer-controller"
 region: "us-east-1"
-vpcId: "vpc-0d049280a7509c3a1"
+vpcId: "vpc-0ed64a3a90c7fd31c"

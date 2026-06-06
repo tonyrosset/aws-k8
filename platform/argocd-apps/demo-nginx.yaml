@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-nginx
+  namespace: gitops
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tonyrosset/aws-k8.git
+    targetRevision: dev
+    path: apps/demo-nginx
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apps
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
