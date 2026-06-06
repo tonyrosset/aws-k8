@@ -24,3 +24,7 @@ output "cluster_endpoint" {
 output "node_group_name" {
   value = module.eks.node_goup_name
 }
+
+output "aws_load_balancer_controller_role_arn" {
+  value = module.eks.aws_load_balancer_controller_role_arn
+}

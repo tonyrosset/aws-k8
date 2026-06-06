@@ -8,10 +8,6 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.36"
     }
-    tls = {
-      source  = "hashicorp/tls"
-      version = "~> 4.0"
-    }
   }
 }
 
@@ -19,22 +15,23 @@ terraform {
 provider "aws" {
   region  = var.aws_region
   profile = var.aws_profile
+}
 
-  default_tags {
-    tags = {
-      Environment = var.environment
-      Project     = var.project_name
-      Owner       = var.owner_name
-    }
+data "terraform_remote_state" "core" {
+  backend = "s3"
+  config = {
+    bucket = var.tfstate_bucket
+    key    = "${var.environment}/core/terraform.tfstate"
+    region = var.aws_region
   }
 }
 
 data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_name
+  name = data.terraform_remote_state.core.outputs.cluster_name
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_name
+  name = data.terraform_remote_state.core.outputs.cluster_name
 }
 
 provider "kubernetes" {

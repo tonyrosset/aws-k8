@@ -96,16 +96,6 @@ resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attachme
   role       = aws_iam_role.aws_load_balancer_controller.name
 }
 
-resource "kubernetes_service_account" "aws_load_balancer_controller" {
-  metadata {
-    name      = "aws-load-balancer-controller"
-    namespace = "ingress"
-    annotations = {
-      "eks.amazonaws.com/role-arn" = aws_iam_role.aws_load_balancer_controller.arn
-    }
-  }
-}
-
 resource "aws_iam_role" "node" {
   name = "${var.project_name}-${var.environment}-node-role"
 
