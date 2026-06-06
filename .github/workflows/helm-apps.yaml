@@ -1,0 +1,37 @@
+name: Helm Apps
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'apps/**'
+      - '.github/workflows/helm-apps.yaml'
+
+  pull_request:
+    paths:
+      - 'apps/**'
+      - '.github/workflows/helm-apps.yaml'
+
+jobs:
+  helm-apps:
+    name: Lint apps Helm charts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Lint Helm Local charts
+        run: |
+          set -euo pipefail
+          find apps -type d -name 'Chart.yaml' | while read -r chartfile; do
+            chartdir="$(dirname "$chartfile")"
+            echo "Linting Helm chart in $chartdir"
+            helm lint "$chartdir"
+            helm template "$(basename "$chartdir")" "$chartdir" > /dev/null
+          done
