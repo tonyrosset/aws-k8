@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app
+  namespace: gitops
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tonyrosset/aws-k8.git
+    targetRevision: dev
+    path: platform/argocd-apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
