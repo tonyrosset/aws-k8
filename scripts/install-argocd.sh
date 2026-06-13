@@ -13,7 +13,7 @@ kubectl create namespace "${NAMESPACE}" --dry-run=client -o yaml | kubectl apply
 echo "Installing ArgoCD..."
 helm upgrade --install argocd argo/argo-cd \
   -n "${NAMESPACE}" \
-  --values platform/helm-values/argocd-apps/values.yaml
+  --values platform/helm-values/argocd/values.yaml
 
 echo "waiting for ArgoCD to be ready..."
 kubectl rollout status deployment/argocd-server -n "${NAMESPACE}"
