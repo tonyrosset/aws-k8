@@ -28,3 +28,11 @@ output "node_group_name" {
 output "aws_load_balancer_controller_role_arn" {
   value = module.eks.aws_load_balancer_controller_role_arn
 }
+
+output "ecr_repository_url" {
+  value = module.ecr.repository_url
+}
+
+output "ecr_repository_name" {
+  value = module.ecr.repository_name
+}

@@ -33,3 +33,9 @@ module "eks" {
   node_max_size         = 2
   node_min_size         = 1
 }
+
+module "ecr" {
+  source = "../../../modules/ecr"
+
+  repository_name = "${var.project_name}-${var.environment}-repo"
+}
