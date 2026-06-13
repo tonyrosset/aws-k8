@@ -1,0 +1,19 @@
+grafana:
+  enabled: true
+
+  service:
+    type: ClusterIP
+
+  ingress:
+    enabled: true
+    ingressClassName: alb
+    annotations:
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/backend-protocol: HTTP
+    paths:
+      - /
+
+prometheus:
+  prometheusSpec:
+    retention: 3d
