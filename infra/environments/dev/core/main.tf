@@ -37,5 +37,6 @@ module "eks" {
 module "ecr" {
   source = "../../../modules/ecr"
 
-  repository_name = "${var.project_name}-${var.environment}-repo"
+  repository_name   = "${var.project_name}-${var.environment}-repo"
+  github_repository = var.github_repository
 }

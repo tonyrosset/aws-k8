@@ -33,3 +33,8 @@ variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   default     = "10.20.0.0/16"
 }
+
+variable "github_repository" {
+  description = "GitHub repository allowed to push images to ECR. Format: owner/repo."
+  type        = string
+}

@@ -12,3 +12,8 @@ output "repository_arn" {
   description = "The ARN of the ECR repository."
   value       = aws_ecr_repository.this.arn
 }
+
+output "github_actions_ecr_push_role_arn" {
+  description = "The ARN of the IAM role for GitHub Actions to push images to ECR."
+  value       = aws_iam_role.github_actions_ecr_push.arn
+}

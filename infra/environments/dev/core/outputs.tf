@@ -36,3 +36,7 @@ output "ecr_repository_url" {
 output "ecr_repository_name" {
   value = module.ecr.repository_name
 }
+
+output "github_actions_ecr_push_role_arn" {
+  value = module.ecr.github_actions_ecr_push_role_arn
+}

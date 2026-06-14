@@ -8,3 +8,8 @@ variable "image_tag_mutability" {
   type        = string
   default     = "MUTABLE"
 }
+
+variable "github_repository" {
+  description = "GitHub repository allowed to push images to ECR. Format: owner/repo."
+  type        = string
+}
