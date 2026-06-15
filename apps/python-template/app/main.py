@@ -6,7 +6,7 @@ app = FastAPI(title="Python Template App")
 @app.get("/")
 def root():
     return {
-        "message": "Hello from Python Template App",
+        "message": "Hello from Python Template App1",
         "service": "python-template"
     }
 

@@ -35,10 +35,10 @@ module "eks" {
 }
 
 module "ecr" {
-  source = "../../../modules/ecr"
-  project_name       = var.project_name
+  source            = "../../../modules/ecr"
+  project_name      = var.project_name
   github_repository = var.github_repository
-  repositories      = [
+  repositories = [
     "${var.project_name}-${var.environment}-python-template"
   ]
 }
