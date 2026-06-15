@@ -17,7 +17,7 @@ spec:
 
   source:
     repoURL: https://github.com/tonyrosset/aws-k8.git
-    targetRevision: main
+    targetRevision: dev
     path: apps/python-template
 
   destination:
