@@ -1,16 +1,17 @@
-output "repository_name" {
-  description = "The name of the ECR repository."
-  value       = aws_ecr_repository.this.name  
+output "repository_urls" {
+  description = "The URIs of the ECR repositories."
+  value       = {
+    for name, repo in aws_ecr_repository.this :
+    name => repo.repository_url
+  }
 }
 
-output "repository_url" {
-  description = "The URI of the ECR repository."
-  value       = aws_ecr_repository.this.repository_url
-}
-
-output "repository_arn" {
-  description = "The ARN of the ECR repository."
-  value       = aws_ecr_repository.this.arn
+output "repository_arns" {
+  description = "The ARNs of the ECR repositories."
+  value       = {
+    for name, repo in aws_ecr_repository.this :
+    name => repo.arn
+  }
 }
 
 output "github_actions_ecr_push_role_arn" {

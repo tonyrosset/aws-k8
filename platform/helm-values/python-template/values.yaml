@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  repository: 387634812002.dkr.ecr.us-east-1.amazonaws.com/aws-k8s-project-dev-python-template
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+  path: /
+  pathType: Prefix
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

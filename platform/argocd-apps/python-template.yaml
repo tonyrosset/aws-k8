@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: python-template
+  namespace: gitops
+
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: app=387634812002.dkr.ecr.us-east-1.amazonaws.com/aws-k8s-project-dev-python-template
+    argocd-image-updater.argoproj.io/app.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/app.helm.image-name: image.repository
+    argocd-image-updater.argoproj.io/app.helm.image-tag: image.tag
+    argocd-image-updater.argoproj.io/write-back-method: argocd #git:secret:gitops/git-creds
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/tonyrosset/aws-k8.git
+    targetRevision: main
+    path: apps/python-template
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apps
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

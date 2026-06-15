@@ -1,7 +1,3 @@
-variable "repository_name" {
-  description = "Name of the ECR repository."
-  type        = string
-}
 
 variable "image_tag_mutability" {
   description = "Whether image tags are mutable or immutable."
@@ -11,5 +7,15 @@ variable "image_tag_mutability" {
 
 variable "github_repository" {
   description = "GitHub repository allowed to push images to ECR. Format: owner/repo."
+  type        = string
+}
+
+variable "repositories" {
+  description = "List of ECR repositories to create."
+  type        = list(string)
+}
+
+variable "project_name" {
+  description = "The name of the project, used for naming resources."
   type        = string
 }

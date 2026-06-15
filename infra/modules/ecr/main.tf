@@ -1,5 +1,6 @@
 resource "aws_ecr_repository" "this" {
-  name                 = var.repository_name
+  for_each = toset(var.repositories)
+  name                 = each.key
   image_tag_mutability = var.image_tag_mutability
 
   image_scanning_configuration {
@@ -13,7 +14,8 @@ resource "aws_ecr_repository" "this" {
 }
 
 resource "aws_ecr_lifecycle_policy" "this" {
-  repository = aws_ecr_repository.this.name
+  for_each = aws_ecr_repository.this
+  repository = each.value.name
 
   policy = jsonencode({
     rules = [
@@ -58,7 +60,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
       values   = ["sts.amazonaws.com"]
     }
     condition {
-      test     = "StringEquals"
+      test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
       values   = ["repo:${var.github_repository}:*"]
     }
@@ -66,7 +68,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
 }
 
 resource "aws_iam_role" "github_actions_ecr_push" {
-  name               = "${var.repository_name}-github-actions-ecr-push"
+  name               = "${var.project_name}-github-actions-ecr-push"
   assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role.json
 }
 
@@ -90,12 +92,12 @@ data "aws_iam_policy_document" "github_actions_ecr_push" {
       "ecr:UploadLayerPart",
       "ecr:DescribeRepositories"]
 
-    resources = [aws_ecr_repository.this.arn]
+    resources = values(aws_ecr_repository.this)[*].arn
   }
 }
 
 resource "aws_iam_policy" "github_actions_ecr_push" {
-  name   = "${var.repository_name}-github-actions-ecr-push"
+  name   = "${var.project_name}-github-actions-ecr-push"
   policy = data.aws_iam_policy_document.github_actions_ecr_push.json
 }
 
