@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: python-template
+  repository: 387634812002.dkr.ecr.us-east-1.amazonaws.com/aws-k8s-project-dev-python-template
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   type: ClusterIP
