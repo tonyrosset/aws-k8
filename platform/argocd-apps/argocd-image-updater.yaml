@@ -15,7 +15,7 @@ spec:
           - $values/platform/helm-values/argocd-image-updater/values.yaml
 
     - repoURL: https://github.com/tonyrosset/aws-k8.git
-      targetRevision: main
+      targetRevision: dev
       ref: values
 
   destination:
