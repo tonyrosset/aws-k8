@@ -42,3 +42,17 @@ module "ecr" {
     "${var.project_name}-${var.environment}-python-template"
   ]
 }
+
+module "external_secrets_aws" {
+  source = "../../../modules/secrets-manager"
+
+  project_name = var.project_name
+  environment  = var.environment
+
+  secret_names = [
+    "python-template"
+  ]
+
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_provider_url = module.eks.oidc_provider_url
+}

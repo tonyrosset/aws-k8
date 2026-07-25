@@ -1,0 +1,8 @@
+serviceAccount:
+  create: true
+  name: external-secrets
+
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::387634812002:role/aws-k8s-project-dev-external-secrets
+
+installCRDs: true

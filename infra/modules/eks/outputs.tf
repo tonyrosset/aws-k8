@@ -13,3 +13,16 @@ output "node_goup_name" {
 output "aws_load_balancer_controller_role_arn" {
   value = aws_iam_role.aws_load_balancer_controller.arn
 }
+output "oidc_provider_arn" {
+  description = "ARN of the EKS IAM OIDC provider."
+  value       = aws_iam_openid_connect_provider.cluster.arn
+}
+
+output "oidc_provider_url" {
+  description = "EKS OIDC provider URL without https://."
+  value = replace(
+    aws_eks_cluster.main.identity[0].oidc[0].issuer,
+    "https://",
+    ""
+  )
+}
