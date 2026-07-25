@@ -1,16 +1,23 @@
+import os
+
 from fastapi import FastAPI
+
 
 app = FastAPI(title="Python Template App")
 
 
 @app.get("/")
-def root():
+def root() -> dict[str, str]:
     return {
-        "message": "Hello from Python Template Apps",
-        "service": "python-template"
+        "message": os.getenv(
+            "API_MESSAGE",
+            "Hello from Python Template App",
+        ),
+        "service": "python-template",
+        "environment": os.getenv("APP_ENV", "local"),
     }
 
 
 @app.get("/health")
-def health():
+def health() -> dict[str, str]:
     return {"status": "ok"}

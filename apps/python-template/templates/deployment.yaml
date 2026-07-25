@@ -22,6 +22,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: python-template-secret
           ports:
             - containerPort: {{ .Values.service.targetPort }}
           readinessProbe:
