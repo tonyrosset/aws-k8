@@ -55,3 +55,13 @@ output "secrets_manager_secret_arns" {
   description = "AWS Secrets Manager secret ARNs."
   value       = module.external_secrets_aws.secret_arns
 }
+
+output "ebs_csi_role_arn" {
+  description = "IAM role ARN used by the EBS CSI driver."
+  value       = module.ebs_csi.iam_role_arn
+}
+
+output "ebs_csi_addon_version" {
+  description = "Installed EBS CSI add-on version."
+  value       = module.ebs_csi.addon_version
+}
