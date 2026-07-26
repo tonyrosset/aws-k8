@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: mongodb
+  namespace: gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+
+spec:
+  project: default
+
+  sources:
+
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: mongodb
+      targetRevision: 16.5.16
+
+      helm:
+        valueFiles:
+          - $values/platform/helm-values/mongodb/values.yaml
+
+    - repoURL: https://github.com/tonyrosset/aws-k8.git
+      targetRevision: dev
+      ref: values
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: platform
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - serverSideApply=true

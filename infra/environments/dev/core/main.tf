@@ -50,7 +50,8 @@ module "external_secrets_aws" {
   environment  = var.environment
 
   secret_names = [
-    "python-template"
+    "python-template",
+    "mongodb"
   ]
 
   oidc_provider_arn = module.eks.oidc_provider_arn
