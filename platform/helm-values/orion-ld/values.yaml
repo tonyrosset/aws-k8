@@ -1,0 +1,33 @@
+mongo:
+  enabled: false
+
+deployment:
+  replicaCount: 1
+
+  image:
+    repository: quay.io/fiware/orion-ld
+    tag: "1.10.0"
+
+broker:
+  db:
+    hosts:
+      - mongodb.platform.svc.cluster.local
+
+    name: orion
+    mongocOnly: true
+
+    existingSecret: orion-mongodb-secret
+
+    auth:
+      user: root
+      password: ""
+
+service:
+  type: ClusterIP
+  port: 1026
+
+test:
+  enabled: false
+
+initData:
+  initEnabled: false
