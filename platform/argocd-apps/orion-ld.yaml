@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: orion-ld
   namespace: gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+
 spec:
   project: default
 
@@ -29,4 +32,4 @@ spec:
 
     syncOptions:
       - CreateNamespace=true
-      - serverSideApply=true
+      - ServerSideApply=true
