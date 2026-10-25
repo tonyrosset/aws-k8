@@ -1,0 +1,38 @@
+# Correction: use bounded memory allocation within the same 48Mi limit.
+# Real remediation should follow measurement and profiling rather than blindly raising limits.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-lab
+  namespace: interview-labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-lab
+  template:
+    metadata:
+      labels:
+        app: memory-lab
+    spec:
+      containers:
+        - name: python
+          image: python:3.12-alpine
+          command: ["python", "-u", "-c"]
+          args:
+            - |
+              import time
+              blocks = []
+              for i in range(8):
+                  blocks.append(bytearray(2 * 1024 * 1024))
+                  print(f"allocated {(i + 1) * 2} MiB", flush=True)
+                  time.sleep(0.15)
+              print("bounded allocation finished; process healthy", flush=True)
+              time.sleep(3600)
+          resources:
+            requests:
+              cpu: 25m
+              memory: 16Mi
+            limits:
+              cpu: 200m
+              memory: 48Mi

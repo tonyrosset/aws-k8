@@ -1,0 +1,28 @@
+# Intentional typo in image tag; exercise produces ErrImagePull / ImagePullBackOff.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-lab
+  namespace: interview-labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: image-lab
+  template:
+    metadata:
+      labels:
+        app: image-lab
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpin
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: 24Mi
+              cpu: 25m
+            limits:
+              memory: 96Mi
+              cpu: 100m

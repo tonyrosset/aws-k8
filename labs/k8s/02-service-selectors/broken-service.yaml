@@ -1,0 +1,15 @@
+# Intentional exercise: selector does not match the existing health-lab Pod.
+# Prerequisite: apply labs/k8s/01-health-probes/fixed.yaml first.
+apiVersion: v1
+kind: Service
+metadata:
+  name: health-lab
+  namespace: interview-labs
+spec:
+  type: ClusterIP
+  selector:
+    app: wrong-lab
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP

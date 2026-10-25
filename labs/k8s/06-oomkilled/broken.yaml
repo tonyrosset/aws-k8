@@ -1,0 +1,38 @@
+# Deliberately memory-hungry Python process: DO NOT use outside a disposable lab.
+# Container memory limit is 48Mi; code attempts to allocate ~96Mi.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-lab
+  namespace: interview-labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-lab
+  template:
+    metadata:
+      labels:
+        app: memory-lab
+    spec:
+      containers:
+        - name: python
+          image: python:3.12-alpine
+          command: ["python", "-u", "-c"]
+          args:
+            - |
+              import time
+              blocks = []
+              for i in range(48):
+                  blocks.append(bytearray(2 * 1024 * 1024))
+                  print(f"allocated {(i + 1) * 2} MiB", flush=True)
+                  time.sleep(0.15)
+              print("allocation finished", flush=True)
+              time.sleep(3600)
+          resources:
+            requests:
+              cpu: 25m
+              memory: 16Mi
+            limits:
+              cpu: 200m
+              memory: 48Mi
