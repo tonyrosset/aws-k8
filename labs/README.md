@@ -53,3 +53,9 @@ To start Lab 06, the namespace is enough; you do not need to redeploy the Nginx 
 6. Document what actually happened, including any unverified steps.
 
 Avoid entering credentials in shared playgrounds: session terminal output may be recorded. Local YAML changes in an expired playground are not automatically committed to this repository.
+
+## Labs 07–08
+
+- [Lab 07 — CPU throttling](k8s/07-cpu-throttling/README.md): measured 49% of quota periods throttled at 100m; no throttling reported across 1,241 periods at 1000m, pending final repeat snapshot.
+- [Lab 08 — AWS VPC routing](aws/08-vpc-routing/README.md): inspect our Terraform's public/private route tables, EKS subnet choice and egress design. Read-only, no AWS provisioning.
+

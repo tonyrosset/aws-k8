@@ -1,0 +1,41 @@
+# Experiment: same workload, 10x higher CPU limit to compare cgroup stats.
+# Not a blanket recommendation for production. Raising limits can increase cost/pressure.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-lab
+  namespace: interview-labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-lab
+  template:
+    metadata:
+      labels:
+        app: cpu-lab
+    spec:
+      containers:
+        - name: python
+          image: python:3.12-alpine
+          command: ["python", "-u", "-c"]
+          args:
+            - |
+              import time
+
+              counter = 0
+              last = time.monotonic()
+
+              while True:
+                  counter += 1
+                  now = time.monotonic()
+                  if now - last >= 5:
+                      print(f"Iterations: {counter}", flush=True)
+                      last = now
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 1000m
+              memory: 96Mi
